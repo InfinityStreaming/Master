@@ -1,147 +1,208 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Central do Usuário - Infinity ∞</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Master - Infinity Streaming</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0d1b2a, #1b263b);
-      color: white;
       margin: 0;
-      padding: 20px;
-    }.logo {
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #00eaff;
-}
-
-.logo span {
-  color: #ff0077;
-}
-
-.login, .dados {
-  max-width: 500px;
-  margin: auto;
-  background: #102841;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,132,255,0.2);
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background: #00bfff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0099cc;
-}
-
-.whatsapp-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #25d366;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
-}
-
-.whatsapp-btn i {
-  font-size: 30px;
-  color: white;
-}
-
-.dados p {
-  margin: 10px 0;
-  line-height: 1.4;
-}
-
-.erro {
-  text-align: center;
-  color: #ff4d4d;
-  margin-top: 20px;
-}
-
-  </style>
-  <script src="https://kit.fontawesome.com/a2e0e6fa1f.js" crossorigin="anonymous"></script>
-</head>
-<body>  <div class="logo">Infinity <span>∞</span> Streaming</div>  <div class="login" id="loginBox">
-    <h2>Digite seu nome de usuário</h2>
-    <input type="text" id="nomeUsuario" placeholder="Ex: João">
-    <button onclick="buscarUsuario()">Entrar</button>
-    <p class="erro" id="erroMsg"></p>
-  </div>  <div class="dados" id="dadosBox" style="display:none;">
-    <h2>Bem-vindo!</h2>
-    <p><strong>Nome:</strong> <span id="nomeInfo"></span></p>
-    <p><strong>Servidor:</strong> <span id="servidorInfo"></span></p>
-    <p><strong>Data de Vencimento:</strong> <span id="vencimentoInfo"></span></p>
-    <p><strong>Chave PIX:</strong> <span id="pixInfo"></span></p>
-    <p><strong>App Instalado:</strong> <span id="appInfo"></span></p>
-    <p><strong>Validade da Licença:</strong> <span id="licencaInfo"></span></p>
-    <p><strong>Facebook:</strong> <a href="https://facebook.com/seupage" target="_blank">Clique aqui</a></p>
-    <p><strong>Landing Page:</strong> <a href="https://seulink.com" target="_blank">Acessar</a></p>
-  </div>  <a class="whatsapp-btn" href="https://wa.me/5598988675945" target="_blank">
-    <i class="fab fa-whatsapp"></i>
-  </a>  <script>
-    function buscarUsuario() {
-      const nome = document.getElementById('nomeUsuario').value.trim().toLowerCase();
-      const erroMsg = document.getElementById('erroMsg');
-      erroMsg.textContent = '';
-
-      if (!nome) {
-        erroMsg.textContent = 'Digite seu nome para continuar.';
-        return;
-      }
-
-      const dados = localStorage.getItem('usuarios');
-      if (!dados) {
-        erroMsg.textContent = 'Nenhum usuário encontrado.';
-        return;
-      }
-
-      const lista = JSON.parse(dados);
-      const usuario = lista.find(u => u.nome.toLowerCase() === nome);
-
-      if (!usuario) {
-        erroMsg.textContent = 'Usuário não encontrado.';
-        return;
-      }
-
-      // Preencher os dados
-      document.getElementById('nomeInfo').textContent = usuario.nome;
-      document.getElementById('servidorInfo').textContent = usuario.servidor;
-      document.getElementById('vencimentoInfo').textContent = usuario.vencimento;
-      document.getElementById('pixInfo').textContent = usuario.chavePIX;
-      document.getElementById('appInfo').textContent = usuario.app;
-      document.getElementById('licencaInfo').textContent = usuario.validadeLicenca;
-
-      // Trocar telas
-      document.getElementById('loginBox').style.display = 'none';
-      document.getElementById('dadosBox').style.display = 'block';
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #fff;
     }
+    header {
+      background: #0ea5e9;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      color: white;
+      letter-spacing: 1px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 0.5rem 0;
+      border-radius: 6px;
+      border: none;
+      font-family: inherit;
+    }
+    button {
+      background: #0ea5e9;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0284c7;
+    }
+    .user {
+      background: #334155;
+      margin: 0.5rem 0;
+      padding: 1rem;
+      border-radius: 8px;
+      position: relative;
+    }
+    .user small {
+      color: #94a3b8;
+    }
+    .actions {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .edit-btn, .delete-btn {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .edit-btn {
+      background: #3b82f6;
+      color: white;
+    }
+    .delete-btn {
+      background: #ef4444;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>Painel Master - Infinity Streaming</header>
+  <div class="container">
+    <h2>Cadastrar/Editar Usuário</h2>
+    <input type="text" id="username" placeholder="Usuário">
+    <input type="text" id="vencimento" placeholder="Data de Vencimento">
+    <input type="text" id="pix" placeholder="Chave PIX">
+    <input type="text" id="telefone" placeholder="Número de Contato">
+    <input type="text" id="facebook" placeholder="Página do Facebook">
+    <input type="text" id="landing" placeholder="Landing Page">
+    <input type="text" id="servidor" placeholder="Servidor">
+    <input type="text" id="nomeApp" placeholder="Nome do App na TV">
+    <input type="text" id="validadeApp" placeholder="Validade da Licença do App">
+    <button onclick="salvarUsuario()">Salvar</button><h2>Usuários Cadastrados</h2>
+<input type="text" id="filtro" placeholder="Buscar por nome ou servidor" onkeyup="filtrarUsuarios()">
+<div id="usuarios"></div>
+
+  </div>  <script>
+    let editandoIndex = null;
+
+    function salvarUsuario() {
+      const user = {
+        nome: document.getElementById('username').value,
+        vencimento: document.getElementById('vencimento').value,
+        pix: document.getElementById('pix').value,
+        telefone: document.getElementById('telefone').value,
+        facebook: document.getElementById('facebook').value,
+        landing: document.getElementById('landing').value,
+        servidor: document.getElementById('servidor').value,
+        nomeApp: document.getElementById('nomeApp').value,
+        validadeApp: document.getElementById('validadeApp').value,
+      };
+
+      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+
+      if (editandoIndex !== null) {
+        usuarios[editandoIndex] = user;
+        editandoIndex = null;
+      } else {
+        usuarios.push(user);
+      }
+
+      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+      limparFormulario();
+      listarUsuarios();
+    }
+
+    function listarUsuarios() {
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const container = document.getElementById('usuarios');
+      container.innerHTML = '';
+
+      usuarios.forEach((u, index) => {
+        container.innerHTML += `
+          <div class="user">
+            <strong>${u.nome}</strong><br>
+            <small>Servidor: ${u.servidor}</small><br>
+            <small>Vencimento: ${u.vencimento}</small>
+            <div class="actions">
+              <button class="edit-btn" onclick="editarUsuario(${index})">Editar</button>
+              <button class="delete-btn" onclick="excluirUsuario(${index})">Excluir</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function editarUsuario(index) {
+      const usuario = JSON.parse(localStorage.getItem('usuarios'))[index];
+      document.getElementById('username').value = usuario.nome;
+      document.getElementById('vencimento').value = usuario.vencimento;
+      document.getElementById('pix').value = usuario.pix;
+      document.getElementById('telefone').value = usuario.telefone;
+      document.getElementById('facebook').value = usuario.facebook;
+      document.getElementById('landing').value = usuario.landing;
+      document.getElementById('servidor').value = usuario.servidor;
+      document.getElementById('nomeApp').value = usuario.nomeApp;
+      document.getElementById('validadeApp').value = usuario.validadeApp;
+      editandoIndex = index;
+    }
+
+    function excluirUsuario(index) {
+      if (confirm('Tem certeza que deseja excluir este usuário?')) {
+        let usuarios = JSON.parse(localStorage.getItem('usuarios'));
+        usuarios.splice(index, 1);
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        listarUsuarios();
+      }
+    }
+
+    function limparFormulario() {
+      document.getElementById('username').value = '';
+      document.getElementById('vencimento').value = '';
+      document.getElementById('pix').value = '';
+      document.getElementById('telefone').value = '';
+      document.getElementById('facebook').value = '';
+      document.getElementById('landing').value = '';
+      document.getElementById('servidor').value = '';
+      document.getElementById('nomeApp').value = '';
+      document.getElementById('validadeApp').value = '';
+    }
+
+    function filtrarUsuarios() {
+      const termo = document.getElementById('filtro').value.toLowerCase();
+      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+      const container = document.getElementById('usuarios');
+      container.innerHTML = '';
+      usuarios.forEach((u, index) => {
+        if (u.nome.toLowerCase().includes(termo) || u.servidor.toLowerCase().includes(termo)) {
+          container.innerHTML += `
+            <div class="user">
+              <strong>${u.nome}</strong><br>
+              <small>Servidor: ${u.servidor}</small><br>
+              <small>Vencimento: ${u.vencimento}</small>
+              <div class="actions">
+                <button class="edit-btn" onclick="editarUsuario(${index})">Editar</button>
+                <button class="delete-btn" onclick="excluirUsuario(${index})">Excluir</button>
+              </div>
+            </div>
+          `;
+        }
+      });
+    }
+
+    listarUsuarios();
   </script></body>
 </html>
