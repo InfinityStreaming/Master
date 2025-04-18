@@ -1,162 +1,147 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html><html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <title>Central do Usuário - Infinity ∞</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel Master - Infinity ∞</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0d1b2a, #1b263b);
-      color: #fff;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 600px;
-      margin: auto;
-      margin-top: 60px;
-      background: #1e3a5f;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 132, 255, 0.3);
-    }
-
-    .container input, .container select {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-      background: #f0f8ff;
-      color: #000;
-    }
-
-    .container button {
-      width: 100%;
-      padding: 12px;
-      background: #00bfff;
       color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .container button:hover {
-      background: #0099cc;
-    }
-
-    .logo {
-      text-align: center;
-      font-size: 28px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      color: #00eaff;
-    }
-
-    .infinito {
-      color: #ff0077;
-    }
-
-    .usuarios-cadastrados {
-      margin-top: 20px;
-      background: #102841;
+      margin: 0;
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
+    }.logo {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #00eaff;
+}
 
-    .usuarios-cadastrados p {
-      margin: 8px 0;
-    }
+.logo span {
+  color: #ff0077;
+}
+
+.login, .dados {
+  max-width: 500px;
+  margin: auto;
+  background: #102841;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,132,255,0.2);
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #00bfff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0099cc;
+}
+
+.whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25d366;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.whatsapp-btn i {
+  font-size: 30px;
+  color: white;
+}
+
+.dados p {
+  margin: 10px 0;
+  line-height: 1.4;
+}
+
+.erro {
+  text-align: center;
+  color: #ff4d4d;
+  margin-top: 20px;
+}
+
   </style>
+  <script src="https://kit.fontawesome.com/a2e0e6fa1f.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body>  <div class="logo">Infinity <span>∞</span> Streaming</div>  <div class="login" id="loginBox">
+    <h2>Digite seu nome de usuário</h2>
+    <input type="text" id="nomeUsuario" placeholder="Ex: João">
+    <button onclick="buscarUsuario()">Entrar</button>
+    <p class="erro" id="erroMsg"></p>
+  </div>  <div class="dados" id="dadosBox" style="display:none;">
+    <h2>Bem-vindo!</h2>
+    <p><strong>Nome:</strong> <span id="nomeInfo"></span></p>
+    <p><strong>Servidor:</strong> <span id="servidorInfo"></span></p>
+    <p><strong>Data de Vencimento:</strong> <span id="vencimentoInfo"></span></p>
+    <p><strong>Chave PIX:</strong> <span id="pixInfo"></span></p>
+    <p><strong>App Instalado:</strong> <span id="appInfo"></span></p>
+    <p><strong>Validade da Licença:</strong> <span id="licencaInfo"></span></p>
+    <p><strong>Facebook:</strong> <a href="https://facebook.com/seupage" target="_blank">Clique aqui</a></p>
+    <p><strong>Landing Page:</strong> <a href="https://seulink.com" target="_blank">Acessar</a></p>
+  </div>  <a class="whatsapp-btn" href="https://wa.me/5598988675945" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+  </a>  <script>
+    function buscarUsuario() {
+      const nome = document.getElementById('nomeUsuario').value.trim().toLowerCase();
+      const erroMsg = document.getElementById('erroMsg');
+      erroMsg.textContent = '';
 
-  <div class="logo">Infinity <span class="infinito">∞</span> Streaming</div>
+      if (!nome) {
+        erroMsg.textContent = 'Digite seu nome para continuar.';
+        return;
+      }
 
-  <div class="container">
-    <h2 style="text-align:center;">Cadastrar Novo Usuário</h2>
-    <input type="text" id="nome" placeholder="Nome do usuário" required>
-    <input type="text" id="servidor" placeholder="Servidor" required>
-    <input type="date" id="vencimento" placeholder="Data de vencimento" required>
-    <input type="text" id="chavePIX" placeholder="Chave PIX" required>
-    <input type="text" id="app" placeholder="Nome do app instalado" required>
-    <input type="date" id="validadeLicenca" placeholder="Validade da licença do app" required>
-    <button onclick="cadastrarUsuario()">Cadastrar Usuário</button>
-  </div>
-
-  <div class="usuarios-cadastrados" id="usuariosCadastrados">
-    <h3>Usuários Cadastrados</h3>
-    <div id="listaUsuarios"></div>
-  </div>
-
-  <script>
-    let usuarios = [];
-
-    function carregarUsuarios() {
       const dados = localStorage.getItem('usuarios');
-      if (dados) {
-        usuarios = JSON.parse(dados);
-        exibirUsuarios();
+      if (!dados) {
+        erroMsg.textContent = 'Nenhum usuário encontrado.';
+        return;
       }
-    }
 
-    function exibirUsuarios() {
-      const listaUsuarios = document.getElementById('listaUsuarios');
-      listaUsuarios.innerHTML = '';
-      if (usuarios.length > 0) {
-        usuarios.forEach((usuario, index) => {
-          listaUsuarios.innerHTML += `
-            <p><strong>Nome:</strong> ${usuario.nome}</p>
-            <p><strong>Servidor:</strong> ${usuario.servidor}</p>
-            <p><strong>Vencimento:</strong> ${usuario.vencimento}</p>
-            <p><strong>Chave PIX:</strong> ${usuario.chavePIX}</p>
-            <p><strong>App Instalado:</strong> ${usuario.app}</p>
-            <p><strong>Validade da Licença:</strong> ${usuario.validadeLicenca}</p>
-            <hr>
-          `;
-        });
-      } else {
-        listaUsuarios.innerHTML = '<p>Nenhum usuário cadastrado.</p>';
+      const lista = JSON.parse(dados);
+      const usuario = lista.find(u => u.nome.toLowerCase() === nome);
+
+      if (!usuario) {
+        erroMsg.textContent = 'Usuário não encontrado.';
+        return;
       }
+
+      // Preencher os dados
+      document.getElementById('nomeInfo').textContent = usuario.nome;
+      document.getElementById('servidorInfo').textContent = usuario.servidor;
+      document.getElementById('vencimentoInfo').textContent = usuario.vencimento;
+      document.getElementById('pixInfo').textContent = usuario.chavePIX;
+      document.getElementById('appInfo').textContent = usuario.app;
+      document.getElementById('licencaInfo').textContent = usuario.validadeLicenca;
+
+      // Trocar telas
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('dadosBox').style.display = 'block';
     }
-
-    function salvarUsuario(usuario) {
-      usuarios.push(usuario);
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-      exibirUsuarios();
-    }
-
-    function cadastrarUsuario() {
-      const nome = document.getElementById('nome').value;
-      const servidor = document.getElementById('servidor').value;
-      const vencimento = document.getElementById('vencimento').value;
-      const chavePIX = document.getElementById('chavePIX').value;
-      const app = document.getElementById('app').value;
-      const validadeLicenca = document.getElementById('validadeLicenca').value;
-
-      const usuario = {
-        nome,
-        servidor,
-        vencimento,
-        chavePIX,
-        app,
-        validadeLicenca,
-      };
-
-      salvarUsuario(usuario);
-      alert('Usuário cadastrado com sucesso!');
-    }
-
-    document.addEventListener('DOMContentLoaded', carregarUsuarios);
-  </script>
-
-</body>
+  </script></body>
 </html>
