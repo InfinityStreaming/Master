@@ -1,208 +1,248 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel Master - Infinity Streaming</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel Master</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: #fff;
-    }
-    header {
-      background: #0ea5e9;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #001f3f, #0074D9);
       color: white;
-      letter-spacing: 1px;
+      padding: 20px;
     }
-    .container {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: #1e293b;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+
+    .login, .painel {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
+
+    .hidden {
+      display: none;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
     input, select, button {
       width: 100%;
       padding: 10px;
-      margin: 0.5rem 0;
-      border-radius: 6px;
+      margin-top: 10px;
       border: none;
-      font-family: inherit;
+      border-radius: 10px;
+      font-size: 16px;
     }
+
     button {
-      background: #0ea5e9;
+      background-color: #0074D9;
       color: white;
-      font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: 0.3s;
     }
+
     button:hover {
-      background: #0284c7;
+      background-color: #005fa3;
     }
-    .user {
-      background: #334155;
-      margin: 0.5rem 0;
-      padding: 1rem;
-      border-radius: 8px;
-      position: relative;
+
+    .usuario {
+      background-color: rgba(0, 0, 0, 0.1);
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 10px;
     }
-    .user small {
-      color: #94a3b8;
+
+    .usuario.vencido {
+      border-left: 4px solid red;
     }
-    .actions {
+
+    .usuario.quase-vencido {
+      border-left: 4px solid orange;
+    }
+
+    #infinity {
       position: absolute;
-      top: 1rem;
-      right: 1rem;
+      top: 10px;
+      right: 20px;
+      font-size: 24px;
+      background: linear-gradient(45deg, red, yellow, green, cyan, blue, magenta);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .whatsapp-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25D366;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
       display: flex;
-      gap: 0.5rem;
-    }
-    .edit-btn, .delete-btn {
-      padding: 5px 10px;
-      font-size: 0.8rem;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .edit-btn {
-      background: #3b82f6;
-      color: white;
-    }
-    .delete-btn {
-      background: #ef4444;
-      color: white;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      box-shadow: 0 0 10px #111;
     }
   </style>
 </head>
 <body>
-  <header>Painel Master - Infinity Streaming</header>
-  <div class="container">
-    <h2>Cadastrar/Editar Usuário</h2>
-    <input type="text" id="username" placeholder="Usuário">
-    <input type="text" id="vencimento" placeholder="Data de Vencimento">
-    <input type="text" id="pix" placeholder="Chave PIX">
-    <input type="text" id="telefone" placeholder="Número de Contato">
-    <input type="text" id="facebook" placeholder="Página do Facebook">
-    <input type="text" id="landing" placeholder="Landing Page">
-    <input type="text" id="servidor" placeholder="Servidor">
-    <input type="text" id="nomeApp" placeholder="Nome do App na TV">
-    <input type="text" id="validadeApp" placeholder="Validade da Licença do App">
-    <button onclick="salvarUsuario()">Salvar</button><h2>Usuários Cadastrados</h2>
-<input type="text" id="filtro" placeholder="Buscar por nome ou servidor" onkeyup="filtrarUsuarios()">
-<div id="usuarios"></div>
 
-  </div>  <script>
-    let editandoIndex = null;
+<div id="infinity">∞</div>
 
-    function salvarUsuario() {
-      const user = {
-        nome: document.getElementById('username').value,
-        vencimento: document.getElementById('vencimento').value,
-        pix: document.getElementById('pix').value,
-        telefone: document.getElementById('telefone').value,
-        facebook: document.getElementById('facebook').value,
-        landing: document.getElementById('landing').value,
-        servidor: document.getElementById('servidor').value,
-        nomeApp: document.getElementById('nomeApp').value,
-        validadeApp: document.getElementById('validadeApp').value,
-      };
+<div class="login" id="login">
+  <h2>Login do Painel</h2>
+  <input type="text" id="usuarioLogin" placeholder="Usuário">
+  <input type="password" id="senhaLogin" placeholder="Senha">
+  <button onclick="logar()">Entrar</button>
+</div>
 
-      let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+<div class="painel hidden" id="painel">
+  <h2>Painel Master</h2>
 
-      if (editandoIndex !== null) {
-        usuarios[editandoIndex] = user;
-        editandoIndex = null;
-      } else {
-        usuarios.push(user);
-      }
+  <input type="text" id="nome" placeholder="Nome do Usuário">
+  <input type="text" id="servidor" placeholder="Servidor">
+  <input type="text" id="chavePix" placeholder="Chave PIX">
+  <input type="text" id="validade" placeholder="Validade (dd/mm/aaaa)" oninput="formatarData(this)">
+  <input type="text" id="app" placeholder="App Instalado">
+  <button onclick="salvarUsuario()">Salvar</button>
 
-      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-      limparFormulario();
-      listarUsuarios();
+  <input type="text" id="busca" placeholder="Buscar por nome" oninput="mostrarUsuarios()">
+  <select id="filtroServidor" onchange="mostrarUsuarios()">
+    <option value="">Todos os Servidores</option>
+  </select>
+
+  <div id="listaUsuarios"></div>
+</div>
+
+<a href="https://wa.me/SEUNUMERO" class="whatsapp-button" target="_blank">✉️</a>
+
+<script>
+  const loginInfo = { usuario: "admin", senha: "1234" };
+
+  function logar() {
+    const u = document.getElementById("usuarioLogin").value;
+    const s = document.getElementById("senhaLogin").value;
+    if (u === loginInfo.usuario && s === loginInfo.senha) {
+      document.getElementById("login").classList.add("hidden");
+      document.getElementById("painel").classList.remove("hidden");
+      mostrarUsuarios();
+    } else {
+      alert("Usuário ou senha incorretos!");
     }
+  }
 
-    function listarUsuarios() {
-      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-      const container = document.getElementById('usuarios');
-      container.innerHTML = '';
+  function formatarData(input) {
+    let v = input.value.replace(/\D/g, '');
+    if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2);
+    if (v.length > 5) v = v.slice(0, 5) + '/' + v.slice(5, 10);
+    input.value = v;
+  }
 
-      usuarios.forEach((u, index) => {
-        container.innerHTML += `
-          <div class="user">
-            <strong>${u.nome}</strong><br>
-            <small>Servidor: ${u.servidor}</small><br>
-            <small>Vencimento: ${u.vencimento}</small>
-            <div class="actions">
-              <button class="edit-btn" onclick="editarUsuario(${index})">Editar</button>
-              <button class="delete-btn" onclick="excluirUsuario(${index})">Excluir</button>
-            </div>
-          </div>
-        `;
-      });
-    }
+  function salvarUsuario() {
+    const nome = document.getElementById("nome").value;
+    const servidor = document.getElementById("servidor").value;
+    const chavePix = document.getElementById("chavePix").value;
+    const validade = document.getElementById("validade").value;
+    const app = document.getElementById("app").value;
 
-    function editarUsuario(index) {
-      const usuario = JSON.parse(localStorage.getItem('usuarios'))[index];
-      document.getElementById('username').value = usuario.nome;
-      document.getElementById('vencimento').value = usuario.vencimento;
-      document.getElementById('pix').value = usuario.pix;
-      document.getElementById('telefone').value = usuario.telefone;
-      document.getElementById('facebook').value = usuario.facebook;
-      document.getElementById('landing').value = usuario.landing;
-      document.getElementById('servidor').value = usuario.servidor;
-      document.getElementById('nomeApp').value = usuario.nomeApp;
-      document.getElementById('validadeApp').value = usuario.validadeApp;
-      editandoIndex = index;
-    }
+    if (!nome) return alert("Preencha o nome");
 
-    function excluirUsuario(index) {
-      if (confirm('Tem certeza que deseja excluir este usuário?')) {
-        let usuarios = JSON.parse(localStorage.getItem('usuarios'));
-        usuarios.splice(index, 1);
-        localStorage.setItem('usuarios', JSON.stringify(usuarios));
-        listarUsuarios();
-      }
-    }
+    const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+    const index = usuarios.findIndex(u => u.nome === nome);
 
-    function limparFormulario() {
-      document.getElementById('username').value = '';
-      document.getElementById('vencimento').value = '';
-      document.getElementById('pix').value = '';
-      document.getElementById('telefone').value = '';
-      document.getElementById('facebook').value = '';
-      document.getElementById('landing').value = '';
-      document.getElementById('servidor').value = '';
-      document.getElementById('nomeApp').value = '';
-      document.getElementById('validadeApp').value = '';
-    }
+    const novo = { nome, servidor, chavePix, validade, app };
+    if (index >= 0) usuarios[index] = novo;
+    else usuarios.push(novo);
 
-    function filtrarUsuarios() {
-      const termo = document.getElementById('filtro').value.toLowerCase();
-      const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-      const container = document.getElementById('usuarios');
-      container.innerHTML = '';
-      usuarios.forEach((u, index) => {
-        if (u.nome.toLowerCase().includes(termo) || u.servidor.toLowerCase().includes(termo)) {
-          container.innerHTML += `
-            <div class="user">
-              <strong>${u.nome}</strong><br>
-              <small>Servidor: ${u.servidor}</small><br>
-              <small>Vencimento: ${u.vencimento}</small>
-              <div class="actions">
-                <button class="edit-btn" onclick="editarUsuario(${index})">Editar</button>
-                <button class="delete-btn" onclick="excluirUsuario(${index})">Excluir</button>
-              </div>
-            </div>
-          `;
-        }
-      });
-    }
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    limparCampos();
+    mostrarUsuarios();
+  }
 
-    listarUsuarios();
-  </script></body>
+  function limparCampos() {
+    document.getElementById("nome").value = '';
+    document.getElementById("servidor").value = '';
+    document.getElementById("chavePix").value = '';
+    document.getElementById("validade").value = '';
+    document.getElementById("app").value = '';
+  }
+
+  function mostrarUsuarios() {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+    const lista = document.getElementById("listaUsuarios");
+    const busca = document.getElementById("busca").value.toLowerCase();
+    const filtro = document.getElementById("filtroServidor").value;
+
+    lista.innerHTML = '';
+    const servidores = new Set();
+
+    usuarios.forEach((u, i) => {
+      if (
+        (filtro && u.servidor !== filtro) ||
+        (busca && !u.nome.toLowerCase().includes(busca))
+      ) return;
+
+      const hoje = new Date();
+      const partes = u.validade.split('/');
+      const validade = new Date(partes[2], partes[1] - 1, partes[0]);
+      const dias = Math.floor((validade - hoje) / (1000 * 60 * 60 * 24));
+
+      let classe = '';
+      if (dias < 0) classe = 'vencido';
+      else if (dias <= 3) classe = 'quase-vencido';
+
+      const div = document.createElement("div");
+      div.className = `usuario ${classe}`;
+      div.innerHTML = `
+        <strong>${u.nome}</strong><br>
+        Servidor: ${u.servidor}<br>
+        PIX: ${u.chavePix}<br>
+        Validade: ${u.validade}<br>
+        App: ${u.app}<br>
+        <button onclick="editarUsuario('${u.nome}')">Editar</button>
+        <button onclick="excluirUsuario('${u.nome}')">Excluir</button>
+      `;
+      lista.appendChild(div);
+      servidores.add(u.servidor);
+    });
+
+    const filtroServidor = document.getElementById("filtroServidor");
+    filtroServidor.innerHTML = '<option value="">Todos os Servidores</option>';
+    servidores.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.textContent = s;
+      filtroServidor.appendChild(opt);
+    });
+  }
+
+  function editarUsuario(nome) {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+    const u = usuarios.find(u => u.nome === nome);
+    if (!u) return;
+
+    document.getElementById("nome").value = u.nome;
+    document.getElementById("servidor").value = u.servidor;
+    document.getElementById("chavePix").value = u.chavePix;
+    document.getElementById("validade").value = u.validade;
+    document.getElementById("app").value = u.app;
+  }
+
+  function excluirUsuario(nome) {
+    if (!confirm("Deseja realmente excluir este usuário?")) return;
+    const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+    const novos = usuarios.filter(u => u.nome !== nome);
+    localStorage.setItem("usuarios", JSON.stringify(novos));
+    mostrarUsuarios();
+  }
+</script>
+
+</body>
 </html>
