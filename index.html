@@ -168,7 +168,12 @@
     // Log para verificar se os dados estão sendo salvos
     console.log("Usuários após salvar:", usuarios);
 
+    // Gravar no localStorage
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+    // Verificar se o localStorage está atualizado
+    console.log("LocalStorage após salvar:", localStorage.getItem("usuarios"));
+
     limparCampos();
     mostrarUsuarios();
   }
@@ -183,7 +188,9 @@
 
   function mostrarUsuarios() {
     const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
-    console.log("Usuários carregados do localStorage:", usuarios); // Verificar os dados carregados
+
+    // Verificar o conteúdo dos dados carregados
+    console.log("Usuários carregados do localStorage:", usuarios);
 
     const lista = document.getElementById("listaUsuarios");
     const busca = document.getElementById("busca").value.toLowerCase();
