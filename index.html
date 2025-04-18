@@ -155,11 +155,18 @@
     if (!nome) return alert("Preencha o nome");
 
     const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
-    const index = usuarios.findIndex(u => u.nome === nome);
 
+    const index = usuarios.findIndex(u => u.nome === nome);
     const novo = { nome, servidor, chavePix, validade, app };
-    if (index >= 0) usuarios[index] = novo;
-    else usuarios.push(novo);
+    
+    if (index >= 0) {
+      usuarios[index] = novo;
+    } else {
+      usuarios.push(novo);
+    }
+
+    // Log para verificar se os dados estão sendo salvos
+    console.log("Usuários após salvar:", usuarios);
 
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
     limparCampos();
@@ -176,6 +183,8 @@
 
   function mostrarUsuarios() {
     const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
+    console.log("Usuários carregados do localStorage:", usuarios); // Verificar os dados carregados
+
     const lista = document.getElementById("listaUsuarios");
     const busca = document.getElementById("busca").value.toLowerCase();
     const filtro = document.getElementById("filtroServidor").value;
